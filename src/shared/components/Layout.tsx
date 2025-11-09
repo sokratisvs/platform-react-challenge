@@ -31,18 +31,23 @@ const Layout = () => {
           ))}
         </ul>
       </nav>
+
       <div className="my-8" />
+
       <div
         className={clsx(
+          'px-8',
+          'pb-8',
           'grid',
           'grid-cols-1',
           'sm:grid-cols-2',
           'md:grid-cols-3',
           'lg:grid-cols-4',
           'xl:grid-cols-5',
-          'gap-4',
+          'gap-6',
           'justify-items-center',
-          'items-center'
+          'items-start',
+          'mx-auto max-w-7xl'
         )}
       >
         <Outlet />
