@@ -1,13 +1,26 @@
+import { useState, useEffect } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { Modal } from '@shared/components';
-import { useCatImage } from '@cats/hooks/useCatImage';
+import clsx from 'clsx';
+import { Modal, Skeleton, ErrorBoundary } from '@shared/components';
+import { useBreedImages } from '@breeds/hooks/useBreedImages';
+import type { BreedImage } from '@breeds/breeds.types';
 
 const BreedModal = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
+  const { data, isLoading, isError } = useBreedImages(id ?? '');
 
-  const { data, isLoading, isError } = useCatImage(id ?? '');
+  const firstImage: BreedImage | undefined = data?.[0];
+  const [selectedImage, setSelectedImage] = useState<BreedImage | undefined>(
+    firstImage
+  );
+
+  useEffect(() => {
+    if (firstImage) {
+      setSelectedImage(firstImage);
+    }
+  }, [firstImage]);
 
   const handleClose = () => {
     navigate(location.state?.backgroundLocation?.pathname || '/breeds', {
@@ -15,28 +28,114 @@ const BreedModal = () => {
     });
   };
 
-  if (isLoading) return null;
-  if (isError || !data) return null;
+  let content;
 
-  const breed = data.breeds?.[0];
+  if (isLoading) {
+    content = (
+      <>
+        <div
+          className={clsx(
+            'h-[250px] sm:h-[300px] md:h-[350px]',
+            'flex items-center justify-center',
+            'w-full flex-shrink-0'
+          )}
+        >
+          <Skeleton className="w-full h-full" />
+        </div>
+        <div
+          className={clsx(
+            'h-[80px] sm:h-[100px]',
+            'flex flex-wrap justify-center',
+            'gap-2 w-full flex-shrink-0'
+          )}
+        >
+          {Array.from({ length: 5 }).map((_, index) => (
+            <Skeleton key={index} className="w-8 h-8" />
+          ))}
+        </div>
+      </>
+    );
+  } else if (isError || !data || data.length === 0) {
+    content = (
+      <div
+        className={clsx(
+          'w-full min-h-[350px]',
+          'flex items-center justify-center text-center',
+          'p-4'
+        )}
+      >
+        Something went wrong. No images were returned.
+      </div>
+    );
+  } else {
+    content = (
+      <>
+        {selectedImage && (
+          <div
+            className={clsx(
+              'h-[250px] sm:h-[300px] md:h-[350px]',
+              'flex items-center justify-center',
+              'w-full flex-shrink-0'
+            )}
+          >
+            <img
+              src={selectedImage.url}
+              alt={selectedImage?.id ?? 'Cat'}
+              className="max-h-full max-w-full rounded-xl object-contain"
+            />
+          </div>
+        )}
+
+        <div
+          className={clsx(
+            'h-[80px] sm:h-[100px]',
+            'flex flex-wrap justify-center',
+            'gap-2 w-full flex-shrink-0'
+          )}
+        >
+          {data.map((image) => {
+            const isActive = image.id === selectedImage?.id;
+            return (
+              <button
+                key={image.id}
+                type="button"
+                onClick={() => setSelectedImage(image)}
+                className={clsx(
+                  'rounded',
+                  'focus:outline-none',
+                  'focus:ring-2',
+                  'focus:ring-offset-2',
+                  isActive ? 'ring-2 ring-blue-500 ring-offset-2' : 'ring-0'
+                )}
+              >
+                <img
+                  src={image.url}
+                  alt={image?.id ?? 'Cat'}
+                  className="w-16 h-16 rounded object-cover"
+                  width={32}
+                  height={32}
+                />
+              </button>
+            );
+          })}
+        </div>
+      </>
+    );
+  }
 
   return (
     <Modal isOpen={true} onClose={handleClose} hasCloseBtn>
-      <div className="flex flex-col items-center gap-4">
-        <img
-          src={data.url}
-          alt={breed?.name ?? 'Cat'}
-          className="max-h-[60vh] rounded-xl object-contain"
-        />
-        {breed && (
-          <div className="text-center">
-            <h2 className="text-xl font-semibold mb-1">{breed.name}</h2>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
-              {breed.temperament}
-            </p>
-          </div>
-        )}
-      </div>
+      <ErrorBoundary fallback={<div>Could not load breed images.</div>}>
+        <div
+          className={clsx(
+            'flex flex-col items-center',
+            'gap-4 w-full min-h-[400px]',
+            'overflow-auto p-4'
+          )}
+        >
+          {content}
+        </div>
+      </ErrorBoundary>
     </Modal>
   );
 };
