@@ -1,4 +1,5 @@
 import { Outlet, NavLink } from 'react-router-dom';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import clsx from 'clsx';
 
 const navLinks = [
@@ -9,8 +10,8 @@ const navLinks = [
 
 const Layout = () => {
   return (
-    <div>
-      <nav className="bg-gray-800 p-4">
+    <div className="flex flex-col h-screen">
+      <nav className="bg-gray-800 p-4 h-16">
         <ul className="flex space-x-4 text-white">
           {navLinks.map((link) => (
             <li key={link.to}>
@@ -32,26 +33,9 @@ const Layout = () => {
         </ul>
       </nav>
 
-      <div className="my-8" />
-
-      <div
-        className={clsx(
-          'px-8',
-          'pb-8',
-          'grid',
-          'grid-cols-1',
-          'sm:grid-cols-2',
-          'md:grid-cols-3',
-          'lg:grid-cols-4',
-          'xl:grid-cols-5',
-          'gap-6',
-          'justify-items-center',
-          'items-start',
-          'mx-auto max-w-7xl'
-        )}
-      >
+      <ScrollArea className={clsx('px-8', 'pb-8', 'flex-1 overflow-y-auto')}>
         <Outlet />
-      </div>
+      </ScrollArea>
     </div>
   );
 };
