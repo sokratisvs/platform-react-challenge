@@ -43,7 +43,7 @@ const RemoveFavouritesButton = ({
 
   const label = (() => {
     if (!isSelectionMode) return 'Press to enable selection mode to delete';
-    if (selectedIds.length === 0) return 'Cancel selection';
+    if (selectedIds.length === 0) return 'Cancel selection mode';
     return `Delete ${selectedIds.length} selected`;
   })();
 

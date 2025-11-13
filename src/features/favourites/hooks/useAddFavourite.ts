@@ -44,7 +44,7 @@ export function useAddFavourite() {
         optimisticFavourite,
       };
     },
-    onError: (error: Error, _imageId, context) => {
+    onError: (error: Error, _, context) => {
       queryClient.setQueryData<Favourite[] | undefined>(
         favouritesKey,
         context?.previousFavouritesList

@@ -1,4 +1,4 @@
-import { useOptimistic, useTransition } from 'react';
+import { useMemo, useOptimistic, useTransition } from 'react';
 import { useFavourites, useAddFavourite, useRemoveFavourites } from '../hooks';
 import { Button } from '@/components/ui/button';
 import { HeartIcon } from '@/components/icons';
@@ -13,9 +13,12 @@ export function FavouriteButton({ imageId }: FavouriteButtonProps) {
   const removeFavourite = useRemoveFavourites();
   const [isPending, startTransition] = useTransition();
 
-  const allFavourites = favourites ?? [];
+  const allFavourites = useMemo(() => favourites ?? [], [favourites]);
 
-  const isInitiallyFav = !!allFavourites.some((f) => f.image_id === imageId);
+  const isInitiallyFav = useMemo(
+    () => !!allFavourites.some((f) => f.image_id === imageId),
+    [allFavourites, imageId]
+  );
 
   const [optimisticIsFav, setOptimisticIsFav] = useOptimistic(
     isInitiallyFav,
