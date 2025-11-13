@@ -8,7 +8,10 @@ export const useModalNavigation = () => {
   const openModal = useCallback(
     (path: string, id: string) => {
       navigate(`/${path}/${id}`, {
-        state: { backgroundLocation: location.pathname },
+        state: {
+          backgroundLocation:
+            location.state?.backgroundLocation || location.pathname,
+        },
       });
     },
     [navigate, location]
@@ -16,7 +19,13 @@ export const useModalNavigation = () => {
 
   const closeModal = useCallback(
     (fallback = '/cats') => {
-      navigate(location.state?.backgroundLocation?.pathname || fallback, {
+      const backgroundLocation = location.state?.backgroundLocation;
+      const backgroundPath =
+        typeof backgroundLocation === 'string'
+          ? backgroundLocation
+          : backgroundLocation?.pathname || fallback;
+
+      navigate(backgroundPath, {
         replace: true,
       });
     },
