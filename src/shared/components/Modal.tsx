@@ -3,6 +3,7 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
+  DialogDescription,
   DialogTitle,
 } from '@/components/ui/dialog';
 import { TriangleAlertIcon } from '@/components/icons';
@@ -33,7 +34,8 @@ const Modal = ({
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent>
         <VisuallyHidden.Root>
-          <DialogTitle>Modal Title</DialogTitle>
+          <DialogTitle>Modal</DialogTitle>
+          <DialogDescription>Cat modal</DialogDescription>
         </VisuallyHidden.Root>
         {hasCloseBtn && <DialogClose onClick={handleClose}></DialogClose>}
         <ErrorBoundary
