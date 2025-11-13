@@ -16,10 +16,8 @@ export async function fetchRandomCats(
     }
   );
   if (!res.ok) {
-    const errorData = await res.json().catch(() => ({}));
-    throw new Error(
-      errorData.message || `Failed to fetch random cats: ${res.statusText}`
-    );
+    const errorData = await res.json();
+    throw new Error(`Failed to fetch random cats:  ${errorData.message}`);
   }
   return res.json();
 }
@@ -29,10 +27,8 @@ export async function fetchCatImageById(imageId: string): Promise<CatImage> {
     headers: defaultHeaders,
   });
   if (!res.ok) {
-    const errorData = await res.json().catch(() => ({}));
-    throw new Error(
-      errorData.message || `Failed to fetch favourites: ${res.statusText}`
-    );
+    const errorData = await res.json();
+    throw new Error(`Failed to fetch cat image by id: ${errorData.message}`);
   }
   return res.json();
 }
