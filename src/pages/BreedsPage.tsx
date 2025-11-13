@@ -2,7 +2,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useRandomBreeds } from '@breeds/hooks/useRandomeBreeds';
 import {
   CatGridSkeleton,
-  LoadMoreButton,
+  ActionButton,
   CatGrid,
   Card,
 } from '@shared/components';
@@ -61,7 +61,7 @@ const BreedsPage = () => {
           );
         })}
       </CatGrid>
-      <LoadMoreButton
+      <ActionButton
         onClick={() => fetchNextPage()}
         isLoading={isFetchingNextPage}
         label="Load more breeds"

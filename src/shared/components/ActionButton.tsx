@@ -2,19 +2,19 @@ import { Button } from '@/components/ui/button';
 import { Loader } from '@shared/components';
 import clsx from 'clsx';
 
-interface LoadMoreButtonProps {
+interface ActionButtonProps {
   onClick: () => void;
   isLoading?: boolean;
   disabled: boolean;
   label: string;
 }
 
-const LoadMoreButton = ({
+const ActionButton = ({
   onClick,
   isLoading = false,
   disabled = true,
   label,
-}: LoadMoreButtonProps) => {
+}: ActionButtonProps) => {
   return (
     <div
       className={clsx(
@@ -48,4 +48,4 @@ const LoadMoreButton = ({
   );
 };
 
-export default LoadMoreButton;
+export default ActionButton;

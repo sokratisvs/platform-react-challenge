@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import {
   CatGridSkeleton,
-  LoadMoreButton,
+  ActionButton,
   CatGrid,
   Card,
 } from '@shared/components';
@@ -64,7 +64,7 @@ const CatsPage = () => {
           </Fragment>
         ))}
       </CatGrid>
-      <LoadMoreButton
+      <ActionButton
         onClick={() => fetchNextPage()}
         isLoading={isFetchingNextPage}
         disabled={!hasNextPage}
