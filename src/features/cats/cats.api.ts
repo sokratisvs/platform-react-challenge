@@ -15,7 +15,12 @@ export async function fetchRandomCats(
       headers: defaultHeaders,
     }
   );
-  if (!res.ok) throw new Error('Failed to fetch random cats');
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(
+      errorData.message || `Failed to fetch random cats: ${res.statusText}`
+    );
+  }
   return res.json();
 }
 
@@ -23,6 +28,11 @@ export async function fetchCatImageById(imageId: string): Promise<CatImage> {
   const res = await fetch(`${API_BASE_URL}/images/${imageId}`, {
     headers: defaultHeaders,
   });
-  if (!res.ok) throw new Error('Failed to fetch cat image');
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(
+      errorData.message || `Failed to fetch favourites: ${res.statusText}`
+    );
+  }
   return res.json();
 }

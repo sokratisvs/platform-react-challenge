@@ -5,8 +5,8 @@ import {
   ActionButton,
   CatGrid,
   Card,
+  ErrorFallback,
 } from '@shared/components';
-import { useNotification } from '@/shared/utils/useNotification';
 
 const BreedsPage = () => {
   const {
@@ -21,7 +21,6 @@ const BreedsPage = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const { error: notifyError } = useNotification();
 
   const handleImageBreedClick = (id: string) => {
     navigate(`/breeds/${id}`, {
@@ -39,8 +38,9 @@ const BreedsPage = () => {
     );
 
   if (isError) {
-    notifyError(`${error?.message}`);
-    return null;
+    return (
+      <ErrorFallback message={error?.message || 'Failed to load breeds'} />
+    );
   }
 
   return (
@@ -55,7 +55,7 @@ const BreedsPage = () => {
               key={`${breed.id}`}
               catId={breed.id}
               imageUrl={breed.image.url}
-              onClick={handleImageBreedClick}
+              onClick={() => handleImageBreedClick(breed.id)}
               alt="breed"
             />
           );

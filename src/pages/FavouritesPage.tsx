@@ -1,14 +1,17 @@
 import { useLocation, useNavigate } from 'react-router-dom';
-import { CatGridSkeleton, CatGrid, Card } from '@shared/components';
+import {
+  CatGridSkeleton,
+  CatGrid,
+  Card,
+  ErrorFallback,
+} from '@shared/components';
 import { useFavourites } from '@favourites/hooks/useFavourites';
-import { useNotification } from '@/shared/utils/useNotification';
 
 const FavouritesPage = () => {
   const { data: favourites, isLoading, isError, error } = useFavourites();
 
   const navigate = useNavigate();
   const location = useLocation();
-  const { error: notifyError } = useNotification();
 
   const handleImageCatClick = (id: string) => {
     navigate(`/cats/${id}`, {
@@ -24,8 +27,9 @@ const FavouritesPage = () => {
     );
 
   if (isError) {
-    notifyError(`${error?.message}`);
-    return null;
+    return (
+      <ErrorFallback message={error?.message || 'Failed to load favourites'} />
+    );
   }
 
   return (

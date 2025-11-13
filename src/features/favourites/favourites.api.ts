@@ -10,7 +10,12 @@ export async function fetchFavourites(): Promise<Favourite[]> {
   const res = await fetch(`${API_BASE_URL}/favourites?order=DESC`, {
     headers: defaultHeaders,
   });
-  if (!res.ok) throw new Error('Failed to fetch favourites');
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(
+      errorData.message || `Failed to fetch favourites: ${res.statusText}`
+    );
+  }
   return res.json();
 }
 
@@ -20,7 +25,12 @@ export async function addFavourite(imageId: string): Promise<Favourite> {
     headers: defaultHeaders,
     body: JSON.stringify({ image_id: imageId }),
   });
-  if (!res.ok) throw new Error('Failed to add favourite');
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(
+      errorData.message || `Failed to add favourite: ${res.statusText}`
+    );
+  }
   return res.json();
 }
 
@@ -29,7 +39,12 @@ async function removeFavourite(favouriteId: number): Promise<void> {
     method: 'DELETE',
     headers: defaultHeaders,
   });
-  if (!res.ok) throw new Error('Failed to remove favourite');
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(
+      errorData.message || `Failed to remove favourite: ${res.statusText}`
+    );
+  }
 }
 
 export async function removeFavourites(ids: number[]): Promise<void> {

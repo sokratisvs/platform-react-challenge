@@ -4,9 +4,9 @@ import {
   ActionButton,
   CatGrid,
   Card,
+  ErrorFallback,
 } from '@shared/components';
 import { useRandomCats } from '@cats/hooks/useRandomeCats';
-import { useNotification } from '@/shared/utils/useNotification';
 import { Fragment } from 'react';
 
 const CatsPage = () => {
@@ -22,7 +22,6 @@ const CatsPage = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const { error: notifyError } = useNotification();
 
   const handleImageCatClick = (id: string) => {
     navigate(`/cats/${id}`, {
@@ -38,8 +37,7 @@ const CatsPage = () => {
     );
 
   if (isError) {
-    notifyError(`${error?.message}`);
-    return null;
+    return <ErrorFallback message={error?.message || 'Failed to load cats.'} />;
   }
 
   return (

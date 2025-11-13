@@ -15,7 +15,12 @@ export async function fetchRandomBreeds(
       headers: defaultHeaders,
     }
   );
-  if (!res.ok) throw new Error('Failed to fetch random breeds');
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(
+      errorData.message || `Failed to fetch random breeds: ${res.statusText}`
+    );
+  }
   return res.json();
 }
 
@@ -26,6 +31,11 @@ export async function fetchBreedImagesById(
   const res = await fetch(
     `${API_BASE_URL}/images/search?breed_ids=${breedId}&limit=${limit}`
   );
-  if (!res.ok) throw new Error('Failed to fetch breed images');
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(
+      errorData.message || `Failed to fetch breed images: ${res.statusText}`
+    );
+  }
   return res.json();
 }

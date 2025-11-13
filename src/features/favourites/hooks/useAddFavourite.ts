@@ -2,19 +2,19 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { addFavourite } from '../favourites.api';
 import { favouritesKey } from './useFavourites';
 import type { Favourite } from '../favourites.types';
+import { useNotification } from '@/shared/utils/useNotification';
 
 export function useAddFavourite() {
   const queryClient = useQueryClient();
+  const { error: notifyError } = useNotification();
 
   return useMutation({
     mutationFn: (imageId: string) => addFavourite(imageId),
     onSuccess: (newFav: Favourite) => {
-      // update cached list
       queryClient.setQueryData<Favourite[]>(favouritesKey, (old) =>
         old ? [...old, newFav] : [newFav]
       );
     },
-    // optimistic update
     onMutate: async (_imageId: string) => {
       // Cancel any outgoing refetches to not overwrite optimistic update
       await queryClient.cancelQueries({ queryKey: favouritesKey });
@@ -44,11 +44,12 @@ export function useAddFavourite() {
         optimisticFavourite,
       };
     },
-    onError: (_error, _imageId, context) => {
+    onError: (error: Error, _imageId, context) => {
       queryClient.setQueryData<Favourite[] | undefined>(
         favouritesKey,
         context?.previousFavouritesList
       );
+      notifyError(error.message || 'Failed to add favourite');
     },
   });
 }
