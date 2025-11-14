@@ -1,21 +1,118 @@
-# GlobalWebIndex Engineering Challenge
+<!--
+  Based on: https://github.com/sokratisvs/Best-README-Template
+-->
 
-## Exercise: CatLover
+<div align="center">
+  <h1>Cat Lovers React App 🐾</h1>
+  <p>
+    A React 19 + Vite app for cat lovers, powered by <a href="https://thecatapi.com/">TheCatAPI</a>.  
+    Browse random cats, explore breeds, and save your favourites.
+  </p>
+</div>
 
-Create a React application for cat lovers which is going to build upon thecatapi.com and will have 3 views.
-The **first** view displays a list of 10 random cat images and a button to load more. Clicking on any of those images opens a modal view with the image and the information about the cat’s breed if available. This would be a link to the second view below - the breed detail. The modal should also contain a form to mark the image as your favourite (a part of the third view as well). Make sure you can copy-paste the URL of the modal and send it to your friends - they should see the same image as you can see.
+---
 
-The **second** view displays a list of cat breeds. Each breed opens a modal again with a list of cat images of that breed. Each of those images must be a link to the image detail from the previous point.
+## Table of Contents
 
-The **third** view allows you do the following things:
+- [About the Project](#about-the-project)
+  - [Features](#features)
+  - [Built With](#built-with)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [Environment Variables](#environment-variables)
+  - [Available Scripts](#available-scripts)
+- [Usage](#usage)
+  - [View 1 – Random Cats](#view-1--random-cats)
+  - [View 2 – Cat Breeds](#view-2--cat-breeds)
+  - [View 3 – Favourites](#view-3--favourites)
+- [Project Structure](#project-structure)
+- [API Reference](#api-reference)
+- [Roadmap](#roadmap)
+- [Contributing](#contributing)
+- [License](#license)
+- [Acknowledgements](#acknowledgements)
 
-- Display your favourite cats
-- Remove an image from your favourites (use any UX option you like)
+---
 
-You can find the API documentation here: https://developers.thecatapi.com/
-We give you a lot of freedom in technologies and ways of doing things. We only insist on you using React.js. Get creative as much as you want, we WILL appreciate it. You will not be evaluated based on how well you follow these instructions, but based on how sensible your solution will be. In case you are not able to implement something you would normally implement for time reasons, make it clear with a comment.
+## About the Project
 
-## Submission
+This project is a small web application for cat lovers built on top of **TheCatAPI**.  
+It demonstrates modern React patterns (React 19, React Query, Vite) and client-side routing with URL-shareable modals.
 
-Once you have built your app, share your code in the mean suits you best
-Good luck, potential colleague!
+The app provides:
+
+- A **gallery of random cats**
+- A **breed explorer** with image galleries per breed
+- A **favourites page** where users can manage their favourite cat images
+
+### Features
+
+**View 1 – Random Cats**
+
+- Displays a list of **10 random cat images**
+- **“Load more”** button to fetch and append more random cats
+- Clicking an image opens a **modal** with:
+  - Larger cat image
+  - **Breed information** if available
+  - A **form/button to mark the image as favourite**
+- **Deep linking**: the modal has a unique URL so you can copy-paste and share it; opening that URL shows the same image and its details.
+
+**View 2 – Cat Breeds**
+
+- Displays a **list of cat breeds** (name + basic info).
+- Selecting a breed opens a **modal** containing:
+  - A list/gallery of images for that breed
+  - Each image is a link to the **image detail modal** from View 1 (same URL behavior).
+
+**View 3 – Favourites**
+
+- Displays **all favourite cat images** saved by the user.
+- Allows **removing an image from favourites** (e.g. via button, icon, or context menu).
+- Shares the same image detail modal behavior as in View 1.
+
+### Built With
+
+- [Vite](https://vitejs.dev/) – build tool & dev server
+- [React 19](https://react.dev/) – UI library
+- [React Router](https://reactrouter.com/) (or similar) – routing & URL-based modals
+- [React Query](https://tanstack.com/query/latest) – data fetching & caching
+- [pnpm](https://pnpm.io/) – package manager
+- [TypeScript](https://www.typescriptlang.org/) (optional but recommended)
+- [TheCatAPI](https://thecatapi.com/) – cat images & breed data
+
+---
+
+## Getting Started
+
+Follow these steps to run the project locally.
+
+### Prerequisites
+
+**Node.js** (LTS recommended)
+
+- **pnpm**
+
+  ```bash
+  npm install -g pnpm
+  ```
+
+  **Or for Node 18+**
+
+  ```bash
+
+  corepack enable
+  ```
+
+- **Local development**
+
+  ```
+  # Move into the new project folder
+  cd cat-lover-app
+
+  # Install dependencies
+  pnpm install
+
+  # Start dev server
+  pnpm dev
+  ```
